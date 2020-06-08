@@ -4,12 +4,12 @@
 # In[51]:
 
 
-import pandas as pd
 from bs4 import BeautifulSoup as bs
 from splinter import Browser
 from flask import Flask
+from flask_pymongo import PyMongo
 import requests
-import pymongo
+
 
 
 # In[ ]:
@@ -41,9 +41,9 @@ articles
 for article in articles:
     short = article.find('div', class_='rollover_description_inner').text
 
-Title code isn't working. The scrape doesn't appear to be pulling the section of code with the title list in it
+# Title code isn't working. The scrape doesn't appear to be pulling the section of code with the title list in it
     title = article.find('div', class_='bottom_gradient')
-    print(title)
+    # print(title)
 
     print(short)
 
@@ -87,7 +87,7 @@ jpl_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
 browser.visit(jpl_url)
 
 
-In[57]:
+# In[57]:
 
 
 html = browser.html
@@ -105,7 +105,7 @@ featured_image_url = 'https://www.jpl.nasa.gov' + my_link
 featured_image_url
 
 
-In[58]:
+# In[58]:
 
 
 browser.quit
@@ -132,25 +132,6 @@ soup_facts = bs(facts_pull.text, 'lxml')
 
 mars_tables = soup_facts.find_all('table', class_= 'tablepress tablepress-id-p-mars')
 mars_tables
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-# FIX
-# NEED TO TRANSLATE DATA ABOVE TO HTML EXPORT
 
 
 # In[ ]:
@@ -228,19 +209,13 @@ for item in valles_info:
 # print(valles_img)
 
 
-# browser.quit()
+browser.quit()
 
 img_list.append(cerb_img)
 img_list.append(schiap_img)
 img_list.append(syrtis_img)
 img_list.append(valles_img)
 img_list
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
@@ -302,12 +277,10 @@ def mars_news():
 
         return short
 
-def browser_setting():
-    executable_path = {'executable_path':'chromedriver.exe'}
-    return Browser('chrome', **executable_path, headless=False)
 
 def jpl_mars():
-    browser = browser_setting()
+    executable_path = {'executable_path':'chromedriver.exe'}
+    browser = Browser('chrome', **executable_path, headless=False)
     jpl_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(jpl_url)
 
@@ -332,7 +305,8 @@ def mars_facts():
     return mars_tables
 
 def mars_hemispheres():
-    browser = browser_setting()
+    executable_path = {'executable_path':'chromedriver.exe'}
+    browser = Browser('chrome', **executable_path, headless=False)
 
     img_list = []
 
@@ -413,9 +387,3 @@ def mars_hemispheres():
     browser.quit()
 
     return hem_titles_images
-
-def scrape():
-    return ("Mars news" + mars_news)
-    return jpl_mars()
-    return ("Mars facts" + mars_facts)
-    return ("Mars Hemispheres" + mars_hemispheres)
